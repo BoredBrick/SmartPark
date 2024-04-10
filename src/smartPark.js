@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Grid, Paper, Typography } from "@mui/material";
 
 const SmartPark = () => {
@@ -12,8 +12,42 @@ const SmartPark = () => {
     area2: Array(4).fill(0),
   });
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimers((prevTimers) => {
+        const newTimers = { ...prevTimers };
+        for (const area in newTimers) {
+          newTimers[area] = newTimers[area].map((time, index) =>
+            occupiedSpaces[area][index] ? time + 1 : time
+          );
+        }
+        return newTimers;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [occupiedSpaces]);
+
   const handleAreaSelection = (area) => {
     setSelectedArea(area);
+  };
+
+  const formatTime = (seconds) => {
+    const padZero = (num) => (num < 10 ? `0${num}` : num);
+
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    if (hours > 0) {
+      return `${padZero(hours)}:${padZero(minutes)}:${padZero(
+        remainingSeconds
+      )}`;
+    } else if (minutes > 0) {
+      return `${padZero(minutes)}:${padZero(remainingSeconds)}`;
+    } else {
+      return `${remainingSeconds} seconds`;
+    }
   };
 
   const handleParkingSpaceClick = (index) => {
@@ -22,21 +56,12 @@ const SmartPark = () => {
       !newOccupiedSpaces[selectedArea][index];
     setOccupiedSpaces(newOccupiedSpaces);
 
-    if (newOccupiedSpaces[selectedArea][index]) {
-      const newTimers = { ...timers };
-      newTimers[selectedArea][index] = setInterval(() => {
-        setTimers((prevTimers) => {
-          const updatedTimers = { ...prevTimers };
-          updatedTimers[selectedArea][index] += 1;
-          return updatedTimers;
-        });
-      }, 1000);
-      setTimers(newTimers);
-    } else {
-      clearInterval(timers[selectedArea][index]);
-      const newTimers = { ...timers };
-      newTimers[selectedArea][index] = 0;
-      setTimers(newTimers);
+    if (!newOccupiedSpaces[selectedArea][index]) {
+      setTimers((prevTimers) => {
+        const newTimers = { ...prevTimers };
+        newTimers[selectedArea][index] = 0;
+        return newTimers;
+      });
     }
   };
 
@@ -78,7 +103,7 @@ const SmartPark = () => {
                 Parking Space {index + 1} (Area {selectedArea})<br />
                 {occupiedSpaces[selectedArea][index] ? (
                   <span>
-                    Occupied for {timers[selectedArea][index]} seconds
+                    Occupied for {formatTime(timers[selectedArea][index])}
                   </span>
                 ) : (
                   <span>Click to occupy</span>
