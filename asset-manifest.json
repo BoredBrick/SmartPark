@@ -1,16 +1,15 @@
 {
   "files": {
-    "main.css": "/SmartPark/static/css/main.f855e6bc.css",
-    "main.js": "/SmartPark/static/js/main.525db50b.js",
-    "static/js/453.6adbc910.chunk.js": "/SmartPark/static/js/453.6adbc910.chunk.js",
-    "static/media/logo.svg": "/SmartPark/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "main.css": "/SmartPark/static/css/main.e6c13ad2.css",
+    "main.js": "/SmartPark/static/js/main.413656e2.js",
+    "static/js/453.b4118009.chunk.js": "/SmartPark/static/js/453.b4118009.chunk.js",
     "index.html": "/SmartPark/index.html",
-    "main.f855e6bc.css.map": "/SmartPark/static/css/main.f855e6bc.css.map",
-    "main.525db50b.js.map": "/SmartPark/static/js/main.525db50b.js.map",
-    "453.6adbc910.chunk.js.map": "/SmartPark/static/js/453.6adbc910.chunk.js.map"
+    "main.e6c13ad2.css.map": "/SmartPark/static/css/main.e6c13ad2.css.map",
+    "main.413656e2.js.map": "/SmartPark/static/js/main.413656e2.js.map",
+    "453.b4118009.chunk.js.map": "/SmartPark/static/js/453.b4118009.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.525db50b.js"
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.413656e2.js"
   ]
 }
