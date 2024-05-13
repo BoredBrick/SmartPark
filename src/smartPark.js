@@ -8,12 +8,12 @@ import { areas } from "./constants/areas";
 const SmartPark = () => {
   const [selectedArea, setSelectedArea] = useState(areas[0]);
   const [parkingSpaces, setParkingSpaces] = useState({
-    A: Array(4).fill(false),
-    B: Array(4).fill(false),
+    A: Array(3).fill(false),
+    B: Array(2).fill(false),
   });
   const [timers, setTimers] = useState({
-    A: Array(4).fill(0),
-    B: Array(4).fill(0),
+    A: Array(3).fill(0),
+    B: Array(2).fill(0),
   });
 
   useEffect(() => {
@@ -30,12 +30,12 @@ const SmartPark = () => {
 
   useEffect(() => {
     const intervalId = setInterval(async () => {
-      const { updatedParkingSpaces, updatedTimers } = await fetchParkingSpaces(
-        parkingSpaces,
-        timers
-      );
+      const { updatedParkingSpaces, updatedTimers, isUpdated } =
+        await fetchParkingSpaces(parkingSpaces, timers);
       setParkingSpaces(updatedParkingSpaces);
-      setTimers(updatedTimers);
+      if (isUpdated) {
+        setTimers(updatedTimers);
+      }
     }, 5000);
     return () => clearInterval(intervalId);
   }, []);
@@ -83,7 +83,7 @@ const SmartPark = () => {
       {selectedArea && (
         <Grid container spacing={2} style={{ marginTop: 20 }}>
           {parkingSpaces[selectedArea]?.map((isOccupied, index) => (
-            <Grid item xs={3} key={index}>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
               <ParkingSpace
                 area={selectedArea}
                 index={index}

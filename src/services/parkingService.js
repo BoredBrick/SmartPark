@@ -1,6 +1,6 @@
 import { db } from "../firebase/firestore";
 import { collection, getDocs } from "firebase/firestore";
-import { enqueueSnackbar } from "notistack";
+import { enqueueSnackbar, closeSnackbar } from "notistack";
 
 let initialLoad = true;
 const fetchParkingSpaces = async (parkingSpaces, timers) => {
@@ -29,9 +29,12 @@ const fetchParkingSpaces = async (parkingSpaces, timers) => {
           index + 1
         } in Area ${area} at ${new Date().toLocaleTimeString()}`;
         if (!initialLoad) {
-          enqueueSnackbar(notificationMessage, {
+          const key = enqueueSnackbar(notificationMessage, {
             variant: isOccupied ? "error" : "success",
-            persist: true,
+            autoHideDuration: 10000,
+            onClick: () => {
+              closeSnackbar(key);
+            },
           });
         }
       }
@@ -39,7 +42,7 @@ const fetchParkingSpaces = async (parkingSpaces, timers) => {
     if (initialLoad) {
       initialLoad = false;
     }
-    return { updatedParkingSpaces, updatedTimers };
+    return { updatedParkingSpaces, updatedTimers, isUpdated: change };
   } catch (error) {
     console.error("Error fetching initial parking spaces:", error);
   }
